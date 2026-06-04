@@ -1,0 +1,10 @@
+# Never commit API keys or local overrides
+config.local.js
+.env
+.env.*
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/

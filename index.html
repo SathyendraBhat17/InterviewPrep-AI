@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="InterviewPrep AI — Practice technical interviews with AI-generated questions and instant feedback." />
+  <title>InterviewPrep AI | Technical Interview Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Global loading overlay for AI requests -->
+  <div id="loading-overlay" class="loading-overlay hidden" aria-hidden="true" role="status">
+    <div class="loading-content">
+      <div class="spinner" aria-hidden="true"></div>
+      <p id="loading-message" class="loading-message">Processing with AI…</p>
+    </div>
+  </div>
+
+  <!-- Toast notifications for errors and success -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="InterviewPrep AI home">
+        <span class="logo-icon" aria-hidden="true">◆</span>
+        <span class="logo-text">InterviewPrep <strong>AI</strong></span>
+      </a>
+      <nav class="header-nav" aria-label="Main">
+        <button type="button" id="btn-new-session" class="btn btn-ghost hidden" title="Start a new interview session">
+          New Session
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Hero / Setup Section -->
+      <section id="setup-section" class="section setup-section">
+        <div class="hero">
+          <p class="hero-badge">Placement-ready practice</p>
+          <h1 class="hero-title">Ace your next technical interview</h1>
+          <p class="hero-subtitle">
+            Generate role-specific questions powered by AI, submit your answers,
+            and receive detailed feedback with scores and improvement tips.
+          </p>
+        </div>
+
+        <div class="card setup-card">
+          <h2 class="card-title">Configure your session</h2>
+          <p class="card-subtitle">Choose your target role and difficulty level to get tailored questions.</p>
+
+          <form id="setup-form" class="setup-form" novalidate>
+            <fieldset class="form-fieldset">
+              <legend class="form-legend">Target role</legend>
+              <div class="role-grid" role="radiogroup" aria-label="Select interview role">
+                <label class="role-option">
+                  <input type="radio" name="role" value="Java Developer" required />
+                  <span class="role-card">
+                    <span class="role-icon" aria-hidden="true">☕</span>
+                    <span class="role-name">Java Developer</span>
+                  </span>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="Frontend Developer" />
+                  <span class="role-card">
+                    <span class="role-icon" aria-hidden="true">⚛</span>
+                    <span class="role-name">Frontend Developer</span>
+                  </span>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="Full Stack Developer" />
+                  <span class="role-card">
+                    <span class="role-icon" aria-hidden="true">🔗</span>
+                    <span class="role-name">Full Stack Developer</span>
+                  </span>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="Python Developer" />
+                  <span class="role-card">
+                    <span class="role-icon" aria-hidden="true">🐍</span>
+                    <span class="role-name">Python Developer</span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-fieldset">
+              <legend class="form-legend">Difficulty level</legend>
+              <div class="difficulty-group" role="radiogroup" aria-label="Select difficulty">
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="Beginner" required />
+                  <span class="difficulty-pill">Beginner</span>
+                </label>
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="Intermediate" />
+                  <span class="difficulty-pill">Intermediate</span>
+                </label>
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="Advanced" />
+                  <span class="difficulty-pill">Advanced</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <button type="submit" id="btn-generate" class="btn btn-primary btn-lg">
+              <span class="btn-text">Generate 5 Interview Questions</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Questions & Answers Section (hidden until questions are generated) -->
+      <section id="interview-section" class="section interview-section hidden">
+        <div class="session-header">
+          <div class="session-meta">
+            <span id="session-role-badge" class="badge badge-role"></span>
+            <span id="session-difficulty-badge" class="badge badge-difficulty"></span>
+          </div>
+          <h2 class="section-title">Interview questions</h2>
+          <p class="section-subtitle">Answer each question thoughtfully, then submit for AI evaluation.</p>
+        </div>
+
+        <div id="questions-container" class="questions-container">
+          <!-- Question cards are injected by script.js -->
+        </div>
+
+        <div class="interview-actions">
+          <button type="button" id="btn-evaluate-all" class="btn btn-primary btn-lg">
+            Evaluate All Answers
+          </button>
+          <p class="action-hint">You can also evaluate individual questions using the button on each card.</p>
+        </div>
+      </section>
+
+      <!-- Summary Section (shown after at least one evaluation) -->
+      <section id="summary-section" class="section summary-section hidden">
+        <div class="card summary-card">
+          <h2 class="card-title">Session summary</h2>
+          <div class="summary-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="summary-avg-score">—</span>
+              <span class="stat-label">Average score / 10</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="summary-evaluated">0</span>
+              <span class="stat-label">Questions evaluated</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>InterviewPrep AI — Built for engineering students preparing for placements.</p>
+      <p class="footer-note">Powered by Google Gemini API</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
