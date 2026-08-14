@@ -10,6 +10,10 @@ Students often struggle to prepare for technical interviews because they lack st
 
 InterviewPrep AI uses Google's Gemini API to generate interview questions based on the selected role and difficulty level. It evaluates user answers and provides scores, strengths, weaknesses, and improvement suggestions.
 
+## Demo
+
+![InterviewPrep AI Demo](assets/INTERVIEWPREP-AI.gif)
+
 ## Features
 
 * AI-generated interview questions
