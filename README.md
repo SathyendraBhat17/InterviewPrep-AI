@@ -12,7 +12,7 @@ InterviewPrep AI uses Google's Gemini API to generate interview questions based 
 
 ## Demo
 
-![InterviewPrep AI Demo](assets/INTERVIEWPREP-AI.gif)
+![InterviewPrep AI Demo](INTERVIEWPREP-AI.gif)
 
 ## Features
 
